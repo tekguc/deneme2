@@ -150,7 +150,7 @@ var autocompleteData = $.parseJSON('[{"value":"Savc?l?k","label":"Savc?l?k","x":
 	<script type="text/javascript">
 $( document ).on( "pageinit", "#page1", function() {
   $('#hgos').click(function(){  
-
+$.mobile.loading('show', {theme:"d", text:"Lütfen Bekleyin...", textVisible: true});
     var defaultLatLng = new google.maps.LatLng(mapx, mapy);  
     if ( navigator.geolocation ) {
         function success(pos) {
@@ -191,6 +191,9 @@ $( document ).on( "pageinit", "#page1", function() {
         });
 		}
     }
+	
+                 $.mobile.loading('hide');
+			
 });
 });
 </script>
