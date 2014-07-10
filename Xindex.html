@@ -64,114 +64,7 @@ var query;
 var mapx=35.2221184;
 var mapy=33.2977195;	
 var isim="Cyprus GIS Center";
-var Searchdata;
 </script>
-<script type="text/javascript" charset="utf-8">
-
-    // Wait for device API libraries to load
-    //
-	$(document).ready(function onDeviceReady() {
-        var db = window.openDatabase("Database", "1.0", "Cordova Demo", 200000);
-        db.transaction(createDB, errorCB, successCB);
-    }
-);
-
-function createDB(tx) {        
-		//tx.executeSql('DROP TABLE IF EXISTS DEMO');
-        tx.executeSql('CREATE TABLE IF NOT EXISTS DEMO (value, label, x, y)');        
-        
-    }
-
-    // Populate the database
-    //
-    function populateDB(tx) {
-        tx.executeSql('INSERT INTO DEMO (value, label, x, y) VALUES ("Savcılık", "Savcılık","igMJhS9VvlPG5T4mItRAlu2uXhg=","KACC90xVvlM0ybK5KHohGxy4BKc=" )');
-		tx.executeSql('INSERT INTO DEMO (value, label, x, y) VALUES ("Light House Otel", "Light House Otel","LgC5QnhVvlNBlsu3kP7B","yAF9I49VvlMIWOYtLFYF" )');        
-    }
-
-    // Transaction error callback
-    //
-    function errorCB(tx, err) {
-        console.log("Error processing SQL: "+err);
-    }
-
-    // Transaction success callback
-    //
-    function successCB() {
-        console.log("DB success!");
-		var db = window.openDatabase("Database", "1.0", "Cordova Demo", 200000);
-		db.transaction(queryDB, errorCB);
-    }
-	
-// Query the database
-//
-function queryDB(tx) {
-    tx.executeSql('SELECT * FROM DEMO', [], querySuccess, errorCB);
-}
-
-// Query the success callback
-//
-function querySuccess(tx, results) {
-    var len = results.rows.length;
-	if (len==0)
-	{
-	    //console.log("boşdur");
-		var db = window.openDatabase("Database", "1.0", "Cordova Demo", 200000);
-		db.transaction(populateDB, errorCB, successCB);		
-	}	
-	else
-	{
-    console.log("DEMO table: " + len + " rows found.");
-	Searchdata='[';
-	var ilk=0;
-    for (var i=0; i<len; i++){
-	    Searchdata+='{"value":"'+results.rows.item(i).value+'","label":"'+results.rows.item(i).label+'","x":"'+results.rows.item(i).x+'","y":"'+results.rows.item(i).y+'"}';
-		if(ilk==0)
-			{Searchdata+=',';
-			ilk++;}
-    console.log("Row = " + i + " ID = " + results.rows.item(i).value + " Data =  " + results.rows.item(i).label);    
-    }
-	Searchdata+=']';
-	console.log(Searchdata);
-	
-		var encPass="HaDi6n$";
-		var blocksize = 256; 
-		var autocompleteData = $.parseJSON(Searchdata);
-			$("#searchField").autocomplete({
-				target: $('#suggestions'),
-				source: function( request, response ) {
-			
-			
-          var matcher = new RegExp( request, "i" );
-		  
-          response( $.grep( autocompleteData, function( item ){
-		  	/*console.log(item.label);
-			console.log(matcher.test( item.value));
-			*/
-              return matcher.test( item.value );
-          })
-		  );}
-		  ,
-				callback: function(e) {
-					var $a = $(e.currentTarget);
-					$('#searchField').val( $a.data('autocomplete').label);
-					mapx=$a.data('autocomplete').x;
-					mapy=$a.data('autocomplete').y;
-					mapx=AES.decrypt( mapx, encPass, blocksize );
-					mapy=AES.decrypt( mapy, encPass, blocksize );
-					/*console.log(mapx);
-					console.log(mapy);
-					*/
-					isim=$a.data('autocomplete').label;
-					$("#searchField").autocomplete('clear');
-				},
-				minLength: 1
-			});
-			}//else
-}
-    </script>
-
-
 </head>
 <body>
 <!-- Home -->
@@ -235,6 +128,41 @@ function querySuccess(tx, results) {
             </div>
 </div>
 
+	<script>
+
+		$("#page1").bind("pageshow", function(e) {
+
+		var encPass="HaDi6n$";
+var blocksize = 256;
+var autocompleteData = $.parseJSON('[{"value":"Savcılık","label":"Savcılık","x":"igMJhS9VvlPG5T4mItRAlu2uXhg=","y":"KACC90xVvlM0ybK5KHohGxy4BKc="},{"value":"Light House Otel","label":"Light House Otel","x":"LgC5QnhVvlNBlsu3kP7B","y":"yAF9I49VvlMIWOYtLFYF"}]');
+			$("#searchField").autocomplete({
+				target: $('#suggestions'),
+				source: function( request, response ) {
+          var matcher = new RegExp( request, "i" );
+          response( $.grep( autocompleteData, function( item ){
+		  	/*console.log(item.label);
+			console.log(matcher.test( item.value));
+			*/
+              return matcher.test( item.value );
+          }) );}
+		  ,
+				callback: function(e) {
+					var $a = $(e.currentTarget);
+					$('#searchField').val( $a.data('autocomplete').label);
+					mapx=$a.data('autocomplete').x;
+					mapy=$a.data('autocomplete').y;
+					mapx=AES.decrypt( mapx, encPass, blocksize );
+					mapy=AES.decrypt( mapy, encPass, blocksize );
+					/*console.log(mapx);
+					console.log(mapy);
+					*/
+					isim=$a.data('autocomplete').label;
+					$("#searchField").autocomplete('clear');
+				},
+				minLength: 1
+			});
+		});
+	</script>
 	<script type="text/javascript">
 	
 	
