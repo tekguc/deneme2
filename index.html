@@ -148,9 +148,11 @@ var autocompleteData = $.parseJSON('[{"value":"Savc?l?k","label":"Savc?l?k","x":
 		});
 	</script>
 	<script type="text/javascript">
+	
+	
 $( document ).on( "pageinit", "#page1", function() {
   $('#hgos').click(function(){  
-$.mobile.loading('show', {theme:"d", text:"Lütfen Bekleyin...", textVisible: true});
+  $.mobile.loading('show', {theme:"d", text:"Lütfen Bekleyin...", textVisible: true});
     var defaultLatLng = new google.maps.LatLng(mapx, mapy);  
     if ( navigator.geolocation ) {
         function success(pos) {
@@ -166,7 +168,9 @@ $.mobile.loading('show', {theme:"d", text:"Lütfen Bekleyin...", textVisible: tr
     } else {
         drawMap(defaultLatLng);  // No geolocation support, show default map
     }
-    function drawMap(latlng) {
+	
+    function drawMap(latlng)
+	{
 
         var myOptions = {
             zoom: 16,
@@ -175,7 +179,7 @@ $.mobile.loading('show', {theme:"d", text:"Lütfen Bekleyin...", textVisible: tr
         };
         var map = new google.maps.Map(document.getElementById("map-canvas"), myOptions);
         // Add an overlay to the map of current lat/lng
-		
+		google.maps.event.addListener(map, 'idle', function() {$.mobile.loading('hide')});
         var marker = new google.maps.Marker({
             position: defaultLatLng,
             map: map,
@@ -192,7 +196,7 @@ $.mobile.loading('show', {theme:"d", text:"Lütfen Bekleyin...", textVisible: tr
 		}
     }
 	
-                 $.mobile.loading('hide');
+                 
 			
 });
 });
