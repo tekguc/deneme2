@@ -23,6 +23,9 @@
   <!-- for autocomplete -->
 <script src="jqm.autoComplete-1.5.2-min.js"></script>
 
+  <!-- for encryption -->
+<script src="aes.class.js"></script>
+
 
 
 <!-- for google map -->
@@ -129,20 +132,34 @@ var isim="Cyprus GIS Center";
 
 		$("#page1").bind("pageshow", function(e) {
 
-		
-var autocompleteData = $.parseJSON('[{"value":"Savc?l?k","label":"Savc?l?k","x":"35.33","y":"33.34"},{"value":"WI","label":"Light House Otel","x":"35.3333","y":"33.3433"}]');
+		var encPass="HaDi6n$";
+var blocksize = 256;
+var autocompleteData = $.parseJSON('[{"value":"Savcılık","label":"Savcılık","x":"igMJhS9VvlPG5T4mItRAlu2uXhg=","y":"KACC90xVvlM0ybK5KHohGxy4BKc="},{"value":"Light House Otel","label":"Light House Otel","x":"LgC5QnhVvlNBlsu3kP7B","y":"yAF9I49VvlMIWOYtLFYF"}]');
 			$("#searchField").autocomplete({
 				target: $('#suggestions'),
-				source: autocompleteData,
+				source: function( request, response ) {
+          var matcher = new RegExp( request, "i" );
+          response( $.grep( autocompleteData, function( item ){
+		  	/*console.log(item.label);
+			console.log(matcher.test( item.value));
+			*/
+              return matcher.test( item.value );
+          })
+		  );}
+		  ,
 				callback: function(e) {
 					var $a = $(e.currentTarget);
-					$('#searchField').val( $a.data('autocomplete').value );
+					$('#searchField').val( $a.data('autocomplete').label);
 					mapx=$a.data('autocomplete').x;
 					mapy=$a.data('autocomplete').y;
+					mapx=AES.decrypt( mapx, encPass, blocksize );
+					mapy=AES.decrypt( mapy, encPass, blocksize );
+					/*console.log(mapx);
+					console.log(mapy);
+					*/
 					isim=$a.data('autocomplete').label;
 					$("#searchField").autocomplete('clear');
 				},
-				link: 'target.html?term=',
 				minLength: 1
 			});
 		});
