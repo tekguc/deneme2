@@ -68,33 +68,11 @@ var query;
   <script type="text/javascript">
   
   $(window).bind('pageshow resize orientationchange', function(e){
-    var el = $('#map-canvas');
-    var parent = el.parent();
-    
-    bottomPoint = parseFloat(el.css('height')) || 0;
-    bottomPoint += parseFloat(el.css('margin-top')) || 0;
-    bottomPoint += parseFloat(el.css('padding-top')) || 0;
-    bottomPoint += parseFloat(el.css('padding-bottom')) || 0;
-    bottomPoint += parseFloat(el.css('border-top-width')) || 0;
-    bottomPoint += parseFloat(el.css('border-bottom-width')) || 0;
-    
-    
-    
-    pbottomPoint = parseFloat(parent.css('height')) || 0;
-    pbottomPoint += parseFloat(parent.css('margin-top'))|| 0;
-    pbottomPoint -= parseFloat(parent.css('padding-top')) || 0;
-    pbottomPoint -= parseFloat(parent.css('padding-bottom')) || 0;
-    pbottomPoint -= parseFloat(parent.css('border-top-width')) || 0;
-    pbottomPoint -= parseFloat(parent.css('border-bottom-width')) || 0;
-    
-    
-    
-    var maxHeight = pbottomPoint - bottomPoint;
-    
-    maxHeight = (maxHeight + parseFloat(el.css('height')) - 
-                 parseFloat(el.css('margin-bottom') || 0))-30;
-    
-    el.css('height', maxHeight);
+       var h = $('div[data-role="header"]').outerHeight(true);   
+    var w = $(window).height();
+	//alert($('div#page1').outerHeight(true)-$('div#h1').outerHeight(true)- $('div#t1').outerHeight(true)  );
+	$('div#map-canvas').height($('div#page1').outerHeight(true)-$('div#h1').outerHeight(true)- $('div#t1').outerHeight(true)-32);
+
 });
   
   
@@ -411,13 +389,13 @@ $( document ).on( "pageinit", "#page1", function() {
 <!-- Home -->
 
 <div data-role="page" id="page1">
-    <div data-theme="b" data-role="header">
+    <div id="h1" data-theme="b" data-role="header">
         <h3>
             E-Nerede
         </h3>
     </div>
     <div data-role="content">
-	    <div data-role="tabs">
+	    <div id="t1" data-role="tabs">
       <div data-role="navbar">
         <ul>
           <li><a href="#fragment-1" class="ui-btn-active ui-state-persist">Firma Ara</a></li>
@@ -437,14 +415,10 @@ $( document ).on( "pageinit", "#page1", function() {
       </div>
     </div>
 
-	<div id="map-canvas" class="ui-content"> <!---  style="width:100%;height:100%;min-height:250px"> -->
-	<img src="reklam.png"></div>
+		<div id="map-canvas" class="ui-content"> <!---  style="width:100%;height:100%;min-height:250px"> -->
+		<img src="reklam.png"></div>
  </div>      
 
-    <div data-theme="a" data-role="footer" data-position="fixed">
-		<a data-role="button" target="_system" data-transition="slidefade" href="http://cyprusgiscenter.com/"
-        data-icon="info" data-iconpos="left">Cyprus GIS center</a>
-    </div>
 
 </div>
         
