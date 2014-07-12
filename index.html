@@ -66,6 +66,38 @@ var query;
 		#page1, #map-canvas { width: 100%; height: 100%; padding: 0; }
 	</style>
   <script type="text/javascript">
+  
+  $(window).bind('pageshow resize orientationchange', function(e){
+    var el = $('#map-canvas');
+    var parent = el.parent();
+    
+    bottomPoint = parseFloat(el.css('height')) || 0;
+    bottomPoint += parseFloat(el.css('margin-top')) || 0;
+    bottomPoint += parseFloat(el.css('padding-top')) || 0;
+    bottomPoint += parseFloat(el.css('padding-bottom')) || 0;
+    bottomPoint += parseFloat(el.css('border-top-width')) || 0;
+    bottomPoint += parseFloat(el.css('border-bottom-width')) || 0;
+    
+    
+    
+    pbottomPoint = parseFloat(parent.css('height')) || 0;
+    pbottomPoint += parseFloat(parent.css('margin-top'))|| 0;
+    pbottomPoint -= parseFloat(parent.css('padding-top')) || 0;
+    pbottomPoint -= parseFloat(parent.css('padding-bottom')) || 0;
+    pbottomPoint -= parseFloat(parent.css('border-top-width')) || 0;
+    pbottomPoint -= parseFloat(parent.css('border-bottom-width')) || 0;
+    
+    
+    
+    var maxHeight = pbottomPoint - bottomPoint;
+    
+    maxHeight = (maxHeight + parseFloat(el.css('height')) - 
+                 parseFloat(el.css('margin-bottom') || 0))-30;
+    
+    el.css('height', maxHeight);
+});
+  
+  
 var mapx=35.2221184;
 var mapy=33.2977195;	
 var isim="Cyprus GIS Center";
@@ -405,7 +437,7 @@ $( document ).on( "pageinit", "#page1", function() {
       </div>
     </div>
 
-	<div id="map-canvas" class="ui-content"  style="width:100%;height:100%;min-height:250px">
+	<div id="map-canvas" class="ui-content"> <!---  style="width:100%;height:100%;min-height:250px"> -->
 	<img src="reklam.png"></div>
  </div>      
 
