@@ -369,7 +369,7 @@ function fill_kapi(tx,results){
     mapx=results.rows.item(0).x;
 	mapy=results.rows.item(0).y;
 	$.mobile.loading('show', {theme:"d", text:"Lütfen Bekleyin...", textVisible: true});
-    var defaultLatLng = new google.maps.LatLng(mapx, mapy);  
+    defaultLatLng = new google.maps.LatLng(mapx, mapy);  
     if ( navigator.geolocation ) {
         function success(pos) {
             // Location found, show map with these coordinates
@@ -413,7 +413,8 @@ $( document ).on( "pageinit", "#page1", function() {
 
 
   $('#hgos').click(function(){  
-  $.mobile.loading('show', {theme:"d", text:"Lütfen Bekleyin...", textVisible: true});     
+  $.mobile.loading('show', {theme:"d", text:"Lütfen Bekleyin...", textVisible: true});   
+	defaultLatLng = new google.maps.LatLng(mapx, mapy);   
     if ( navigator.geolocation ) {
         function success(pos) {
             // Location found, show map with these coordinates
