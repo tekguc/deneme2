@@ -58,7 +58,9 @@ var remoteversion=-1,currentversion=0;
 var url2='http://umut.tekguc.info/webservices/canws/getdoors.php?callback=?';  
 var url='http://umut.tekguc.info/webservices/canws/getpois.php?callback=?';  
 var url3='http://umut.tekguc.info/webservices/canws/provideVersion.php?callback=?';  
-var defaultLatLng = new google.maps.LatLng(mapx, mapy); 
+var defaultLatLng; 
+var encPass="HaDi6n$5L/";
+var blocksize = 256; 
 </script>
 <script type="text/javascript" charset="utf-8">
 // custom hata mesajı göstermek için
@@ -150,7 +152,7 @@ function queryDB(tx) {
   
 	// door table operations	
 	function successbosDoor() {
-        console.log("DB successfully filled with doors!");
+        //console.log("DB successfully filled with doors!");
 		var db = window.openDatabase("Database", "1.0", "CANDB", 200000);
 		db.transaction(query_door, errorCBdd);
     }
@@ -195,8 +197,7 @@ function fill_poi(tx,results){
 	Searchdata+=']';
 	//console.log(Searchdata);
 	
-		var encPass="HaDi6n$5L/";
-		var blocksize = 256; 
+		
 		var autocompleteData = $.parseJSON(Searchdata);
 			$("#searchField").autocomplete({
 				target: $('#suggestions'),
@@ -368,8 +369,12 @@ function query_kapi(tx) {
 function fill_kapi(tx,results){
     mapx=results.rows.item(0).x;
 	mapy=results.rows.item(0).y;
+	mapx=AES.decrypt( mapx, encPass, blocksize );
+	mapy=AES.decrypt( mapy, encPass, blocksize );
+	console.log(mapx);
+	console.log(mapy);
 	$.mobile.loading('show', {theme:"d", text:"Lütfen Bekleyin...", textVisible: true});
-    defaultLatLng = new google.maps.LatLng(mapx, mapy);  
+    defaultLatLng = new google.maps.LatLng(mapy, mapx);  
     if ( navigator.geolocation ) {
         function success(pos) {
             // Location found, show map with these coordinates
@@ -414,7 +419,7 @@ $( document ).on( "pageinit", "#page1", function() {
 
   $('#hgos').click(function(){  
   $.mobile.loading('show', {theme:"d", text:"Lütfen Bekleyin...", textVisible: true});   
-	defaultLatLng = new google.maps.LatLng(mapx, mapy);   
+	defaultLatLng = new google.maps.LatLng(mapy, mapx);   
     if ( navigator.geolocation ) {
         function success(pos) {
             // Location found, show map with these coordinates
